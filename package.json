@@ -1,0 +1,14 @@
+{
+  "name": "socketio",
+  "version": "0.1.0",
+  "dependencies": {
+    "body-parser": "~1.10.1",
+    "cookie-session": "~1.1.0",
+    "ejs": "~2.3.4",
+    "ent": "^2.2.0",
+    "express": "~4.13.3",
+    "socket.io": "^1.4.6"
+  },
+  "author": "glenn guegan <glenn.guegan@gmail.com>",
+  "description": "todo list"
+}

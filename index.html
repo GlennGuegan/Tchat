@@ -1,0 +1,60 @@
+<doctype>
+  <html>
+    <head>
+      <meta charset="utf-8" />
+      <title>Socket io</title>
+    </head>
+    <body>
+      <h1>Communication avec Socket.IO</h1>
+      <div id="div-connection" style="visibility:visible">
+        <p>
+          <input type="text" id="pseudo" placeholder="Pseudo" required/>
+        </p>
+        <p>
+          <input type="button" id="connection" value="Connexion" />
+        </p>
+      </div>
+      <div id="chat" style="visibility:hidden">
+        <p>
+          <textarea id="message" rows="4" cols="50" placeholder="Votre message"></textarea>
+        </p>  
+        <p>
+          <input type="button" id="click" value="Envoyer" />
+        </p>
+        <div id="content"></div>
+      </div>
+      <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+      <script src="/socket.io/socket.io.js" type="text/javascript"></script>
+      <script type="text/javascript">
+        var pseudo;
+        $("#connection").click(function(){
+          pseudo = $("#pseudo").val();
+          socket.emit("pseudo", pseudo);
+          document.title = pseudo +' - tchat';
+          $("#div-connection").css("display","none");
+          $("#chat").css("visibility","visible");
+        });
+        
+        var socket = io.connect('http://localhost:8080');
+        socket.on("new-user", function(data){
+          insertMsg("<i>"+data.pseudo+"</i>", data.message);
+        });
+        //envoi d'un message
+        $("#click").click(function(){
+          var msg = $("#message").val();
+          socket.emit("message", msg);
+          insertMsg(pseudo, msg); 
+          $("#message").val('');
+        });
+        //reception d'un message
+        socket.on("msg-broadcast", function(data){
+          insertMsg(data.pseudo, data.message);         
+        });
+        
+        var insertMsg = function(pseudo, msg){
+          $("#content").append("<p>"+pseudo +" : "+ msg +"</p>");
+        }
+      </script>
+    </body>
+  </html>
+</doctype>
